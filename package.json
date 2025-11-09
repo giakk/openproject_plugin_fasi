@@ -1,0 +1,23 @@
+
+{
+  "name": "openproject-phases_plugin",
+  "version": "1.0.0",
+  "description": "Plugin per gestire le fasi dei progetti",
+  "main": "frontend/module/main.ts",
+  "scripts": {
+    "build": "echo 'Build handled by OpenProject main application'",
+    "test": "echo 'No tests specified yet'"
+  },
+  "keywords": [
+    "openproject",
+    "plugin",
+    "fasi"
+  ],
+  "author": "Riccardo Giacchino",
+  "license": "GPL-3.0",
+  "peerDependencies": {
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0",
+    "@angular/forms": "^14.0.0"
+  }
+}

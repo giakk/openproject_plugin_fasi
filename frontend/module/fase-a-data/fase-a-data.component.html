@@ -1,0 +1,40 @@
+<div class="fase-a-container">
+  <h2>{{ getText('fase_a.title') }}</h2>
+
+  <div *ngIf="loading" class="loading-indicator">
+    <span class="loading-indicator--spinner"></span>
+  </div>
+
+  <div *ngIf="!loading && data" class="fase-a-form">
+    <form>
+      <div *ngFor="let field of fields" class="form--field">
+        <label class="form--label" [attr.for]="field.key">
+          {{ getText(field.label) }}
+        </label>
+        <div class="form--field-container">
+          <input
+            type="text"
+            class="form--text-field"
+            [id]="field.key"
+            [(ngModel)]="data[field.key]"
+            [name]="field.key"
+            maxlength="100"
+          />
+        </div>
+      </div>
+
+      <div class="form--actions">
+        <button
+          type="button"
+          class="button -primary"
+          (click)="save()"
+          [disabled]="saving"
+        >
+          <span *ngIf="!saving">{{ getText('fase_a.save') }}</span>
+          <span *ngIf="saving" class="loading-indicator--spinner"></span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
