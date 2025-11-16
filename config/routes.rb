@@ -11,5 +11,9 @@ OpenProject::Application.routes.draw do
               controller: 'fase_c_data',
               only: [:show, :update]        
     end
+    
+    # Nuove routes per l'overview globale
+    get 'phases_overview', to: 'phases_overview#index'
+    put 'phases_overview/update', to: 'phases_overview#update'
   end
 end

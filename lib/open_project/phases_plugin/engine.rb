@@ -8,6 +8,29 @@ module OpenProject
       register 'openproject-phases_plugin',
                author_url: 'https://github.com/giakk',
                bundled: false do
+
+
+        project_module :phases_overview_module do
+          permission :view_phases_overview,
+                      { phases_overview: [:index] },
+                      permissible_on: :global,
+                      contract_actions: { phases_overview: [:index] }
+          
+          permission :edit_phases_overview,
+                      { phases_overview: [:update] },
+                      permissible_on: :global,
+                      contract_actions: { phases_overview: [:update] },
+                      require: :member
+        end
+
+        # Menu nella homepage globale per l'overview delle fasi
+        menu :top_menu,
+             :phases_overview,
+             { controller: '/phases_overview', action: 'index' },
+             caption: 'Panoramica Fasi',
+             after: :gantt,
+             icon: 'check-circle',
+             if: Proc.new { User.current.logged? }
         
 
         project_module :fase_a_module do
