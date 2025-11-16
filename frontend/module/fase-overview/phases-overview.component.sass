@@ -45,47 +45,111 @@
     top: 0
     z-index: 10
 
-    th
-      padding: 12px 8px
-      text-align: left
-      font-weight: 600
-      border-bottom: 2px solid #ddd
-      white-space: nowrap
-      min-width: 120px
+    // Primo livello header (Fase A, B, C)
+    .phase-row
+      th
+        padding: 6px 8px
+        text-align: center
+        font-weight: 600
+        border-bottom: 1px solid #ddd
+        border-right: 1px solid #ddd
+        cursor: pointer
+        user-select: none
+        transition: background-color 0.2s ease
 
-      &.project-name-column
-        min-width: 200px
-        max-width: 250px
+        &:hover:not(.project-name-column)
+          opacity: 0.8
 
-      .column-header
-        display: flex
-        align-items: center
-        gap: 6px
+        &:last-child
+          border-right: none
 
-      .phase-badge
-        display: inline-block
-        padding: 2px 6px
-        border-radius: 3px
-        font-size: 11px
-        font-weight: bold
-        color: white
+        &.project-name-column
+          text-align: left
+          border-right: 2px solid #aaa
+          cursor: default
 
-      .fase-a-badge
-        background-color: #4a90e2
+          &:hover
+            opacity: 1
 
-      .fase-b-badge
-        background-color: #7cb342
+        &.phase-group
+          font-size: 14px
+          font-weight: 700
+          min-width: 120px
 
-      .fase-c-badge
-        background-color: #f57c00
+        .phase-header-content
+          display: flex
+          align-items: center
+          justify-content: center
+          gap: 8px
+          white-space: nowrap
 
-      .column-label
-        display: inline-block
-        padding: 2px 6px
-        border-radius: 3px
-        font-size: 11px
-        font-weight: bold
-        color: white
+        .collapse-icon
+          font-size: 10px
+          transition: transform 0.3s ease
+          display: inline-block
+
+          &.collapsed
+            transform: rotate(-90deg)
+
+        .phase-badge
+          display: inline-block
+          padding: 4px 12px
+          border-radius: 4px
+          font-size: 13px
+          font-weight: bold
+          color: white
+
+        &.fase-a-group
+          background-color: #e3f2fd
+
+        &.fase-b-group
+          background-color: #f1f8e9
+
+        &.fase-c-group
+          background-color: #fff3e0
+
+    // Secondo livello header (Colonne specifiche)
+    .column-row
+      th
+        padding: 0px 8px
+        text-align: left
+        font-weight: 600
+        border-bottom: 2px solid #ddd
+        white-space: nowrap
+        min-width: 120px
+        max-width: 300px
+        transition: all 0.3s ease
+
+        &.collapsed-placeholder
+          min-width: 60px
+          text-align: center
+          font-style: italic
+          color: #999
+
+        .column-label
+          font-size: 12px
+          font-weight: 600
+
+        &.fase-a-column
+          background-color: #e3f2fd
+          border-right: 1px solid #b3d9ff
+
+        &.fase-b-column
+          background-color: #f1f8e9
+          border-right: 1px solid #c5e1a5
+
+        &.fase-c-column
+          background-color: #fff3e0
+          border-right: 1px solid #ffcc80
+
+  .fase-a-badge
+    background-color: #4a90e2
+
+  .fase-b-badge
+    background-color: #7cb342
+
+  .fase-c-badge
+    background-color: #f57c00
 
   tbody
     tr
@@ -99,9 +163,18 @@
       padding: 8px
       border-bottom: 1px solid #e0e0e0
       vertical-align: middle
+      transition: all 0.3s ease
+
+      &.collapsed-cell
+        min-width: 60px
+        text-align: center
+        font-style: italic
+        color: #999
+        background-color: #f5f5f5
 
       &.project-name-cell
         font-weight: 500
+        border-right: 2px solid #ddd
 
         .project-link
           color: #1976d2
@@ -127,25 +200,34 @@
 
           input
             flex: 1
-            min-width: 100px
+            min-width: 150px
             padding: 4px 6px
             font-size: 13px
 
           button
-            padding: 4px 8px
+            margin-top: 2px;
+            margin-bottom: 2px;
+            margin-right: 0px;
+            padding: 4px 4px
             font-size: 12px
             cursor: pointer
 
       &.fase-a-cell
-        &:hover
+        border-right: 1px solid #e0e0e0
+
+        &:hover:not(.collapsed-cell)
           background-color: #e3f2fd
 
       &.fase-b-cell
-        &:hover
+        border-right: 1px solid #e0e0e0
+
+        &:hover:not(.collapsed-cell)
           background-color: #f1f8e9
 
       &.fase-c-cell
-        &:hover
+        border-right: 1px solid #e0e0e0
+
+        &:hover:not(.collapsed-cell)
           background-color: #fff3e0
 
   .sticky-column

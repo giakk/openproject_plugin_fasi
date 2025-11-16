@@ -23,39 +23,73 @@
   <div *ngIf="!loading && data" class="phases-overview-table-wrapper">
     <table class="phases-overview-table generic-table">
       <thead>
-        <tr>
-          <th class="project-name-column sticky-column">
+        <!-- Primo livello header: Fase A, B, C -->
+        <tr class="phase-row">
+          <th class="project-name-column sticky-column" [attr.rowspan]="2">
             {{ getText('phases_overview.project') }}
           </th>
-          
-          <!-- Fase A Columns -->
-          <th *ngFor="let column of data.columns.fase_a; trackBy: trackByColumnKey" 
-              class="phase-column fase-a-column"
-              [title]="getText(column.label)">
-            <div class="column-header">
-              <!-- <span class="phase-badge fase-a-badge">A</span> -->
-              <span class="column-label fase-a-badge">{{ getText(column.label) }}</span>
+          <th [attr.colspan]="isPhaseCollapsed('fase_a') ? 1 : data.columns.fase_a.length" 
+              class="phase-group fase-a-group"
+              (click)="togglePhase('fase_a')">
+            <div class="phase-header-content">
+              <!-- <span class="collapse-icon" [class.collapsed]="isPhaseCollapsed('fase_a')">▼</span> -->
+              <span class="phase-badge fase-a-badge">Fase A</span>
             </div>
+          </th>
+          <th [attr.colspan]="isPhaseCollapsed('fase_b') ? 1 : data.columns.fase_b.length" 
+              class="phase-group fase-b-group"
+              (click)="togglePhase('fase_b')">
+            <div class="phase-header-content">
+              <!-- <span class="collapse-icon" [class.collapsed]="isPhaseCollapsed('fase_b')">▼</span> -->
+              <span class="phase-badge fase-b-badge">Fase B</span>
+            </div>
+          </th>
+          <th [attr.colspan]="isPhaseCollapsed('fase_c') ? 1 : data.columns.fase_c.length" 
+              class="phase-group fase-c-group"
+              (click)="togglePhase('fase_c')">
+            <div class="phase-header-content">
+              <!-- <span class="collapse-icon" [class.collapsed]="isPhaseCollapsed('fase_c')">▼</span> -->
+              <span class="phase-badge fase-c-badge">Fase C</span>
+            </div>
+          </th>
+        </tr>
+        
+        <!-- Secondo livello header: Colonne specifiche -->
+        <tr class="column-row">
+          <!-- Fase A Columns -->
+          <ng-container *ngIf="!isPhaseCollapsed('fase_a')">
+            <th *ngFor="let column of data.columns.fase_a; trackBy: trackByColumnKey" 
+                class="phase-column fase-a-column"
+                [title]="getText(column.label)">
+              <span class="column-label">{{ getText(column.label) }}</span>
+            </th>
+          </ng-container>
+          <th *ngIf="isPhaseCollapsed('fase_a')" class="phase-column fase-a-column collapsed-placeholder">
+            <span class="column-label">...</span>
           </th>
           
           <!-- Fase B Columns -->
-          <th *ngFor="let column of data.columns.fase_b; trackBy: trackByColumnKey" 
-              class="phase-column fase-b-column"
-              [title]="getText(column.label)">
-            <div class="column-header">
-              <!-- <span class="phase-badge fase-b-badge">B</span> -->
-              <span class="column-label fase-b-badge">{{ getText(column.label) }}</span>
-            </div>
+          <ng-container *ngIf="!isPhaseCollapsed('fase_b')">
+            <th *ngFor="let column of data.columns.fase_b; trackBy: trackByColumnKey" 
+                class="phase-column fase-b-column"
+                [title]="getText(column.label)">
+              <span class="column-label">{{ getText(column.label) }}</span>
+            </th>
+          </ng-container>
+          <th *ngIf="isPhaseCollapsed('fase_b')" class="phase-column fase-b-column collapsed-placeholder">
+            <span class="column-label">...</span>
           </th>
           
           <!-- Fase C Columns -->
-          <th *ngFor="let column of data.columns.fase_c; trackBy: trackByColumnKey" 
-              class="phase-column fase-c-column"
-              [title]="getText(column.label)">
-            <div class="column-header">
-              <!-- <span class="phase-badge fase-c-badge">C</span> -->
-              <span class="column-label fase-c-badge">{{ getText(column.label) }}</span>
-            </div>
+          <ng-container *ngIf="!isPhaseCollapsed('fase_c')">
+            <th *ngFor="let column of data.columns.fase_c; trackBy: trackByColumnKey" 
+                class="phase-column fase-c-column"
+                [title]="getText(column.label)">
+              <span class="column-label">{{ getText(column.label) }}</span>
+            </th>
+          </ng-container>
+          <th *ngIf="isPhaseCollapsed('fase_c')" class="phase-column fase-c-column collapsed-placeholder">
+            <span class="column-label">...</span>
           </th>
         </tr>
       </thead>
@@ -69,93 +103,108 @@
           </td>
           
           <!-- Fase A Cells -->
-          <td *ngFor="let column of data.columns.fase_a; trackBy: trackByColumnKey" 
-              class="editable-cell fase-a-cell"
-              (click)="startEditing(project.project_id, 'fase_a', column.key, getCellValue(project, 'fase_a', column.key))">
-            <div *ngIf="!isEditing(project.project_id, 'fase_a', column.key)" class="cell-content">
-              {{ getCellValue(project, 'fase_a', column.key) || '-' }}
-            </div>
-            <div *ngIf="isEditing(project.project_id, 'fase_a', column.key)" class="cell-edit">
-              <input
-                type="text"
-                class="form--text-field -compact"
-                [(ngModel)]="tempValue"
-                (keyup.enter)="saveCell(project.project_id, 'fase_a', column.key)"
-                (keyup.escape)="cancelEditing()"
-                (click)="$event.stopPropagation()"
-                autofocus
-              />
-              <button 
-                class="button -compact -with-icon icon-checkmark"
-                (click)="saveCell(project.project_id, 'fase_a', column.key); $event.stopPropagation()"
-                type="button">
-              </button>
-              <button 
-                class="button -compact -with-icon icon-close"
-                (click)="cancelEditing(); $event.stopPropagation()"
-                type="button">
-              </button>
-            </div>
+          <ng-container *ngIf="!isPhaseCollapsed('fase_a')">
+            <td *ngFor="let column of data.columns.fase_a; trackBy: trackByColumnKey" 
+                class="editable-cell fase-a-cell"
+                (click)="startEditing(project.project_id, 'fase_a', column.key, getCellValue(project, 'fase_a', column.key))">
+              <div *ngIf="!isEditing(project.project_id, 'fase_a', column.key)" class="cell-content">
+                {{ getCellValue(project, 'fase_a', column.key) || '-' }}
+              </div>
+              <div *ngIf="isEditing(project.project_id, 'fase_a', column.key)" class="cell-edit">
+                <input
+                  type="text"
+                  class="form--text-field -compact"
+                  [(ngModel)]="tempValue"
+                  (keyup.enter)="saveCell(project.project_id, 'fase_a', column.key)"
+                  (keyup.escape)="cancelEditing()"
+                  (click)="$event.stopPropagation()"
+                  autofocus
+                />
+                <button 
+                  class="button -compact -with-icon icon-checkmark"
+                  (click)="saveCell(project.project_id, 'fase_a', column.key); $event.stopPropagation()"
+                  type="button">
+                </button>
+                <button 
+                  class="button -compact -with-icon icon-close"
+                  (click)="cancelEditing(); $event.stopPropagation()"
+                  type="button">
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <td *ngIf="isPhaseCollapsed('fase_a')" class="collapsed-cell fase-a-cell">
+            ...
           </td>
           
           <!-- Fase B Cells -->
-          <td *ngFor="let column of data.columns.fase_b; trackBy: trackByColumnKey" 
-              class="editable-cell fase-b-cell"
-              (click)="startEditing(project.project_id, 'fase_b', column.key, getCellValue(project, 'fase_b', column.key))">
-            <div *ngIf="!isEditing(project.project_id, 'fase_b', column.key)" class="cell-content">
-              {{ getCellValue(project, 'fase_b', column.key) || '-' }}
-            </div>
-            <div *ngIf="isEditing(project.project_id, 'fase_b', column.key)" class="cell-edit">
-              <input
-                type="text"
-                class="form--text-field -compact"
-                [(ngModel)]="tempValue"
-                (keyup.enter)="saveCell(project.project_id, 'fase_b', column.key)"
-                (keyup.escape)="cancelEditing()"
-                (click)="$event.stopPropagation()"
-                autofocus
-              />
-              <button 
-                class="button -compact -with-icon icon-checkmark"
-                (click)="saveCell(project.project_id, 'fase_b', column.key); $event.stopPropagation()"
-                type="button">
-              </button>
-              <button 
-                class="button -compact -with-icon icon-close"
-                (click)="cancelEditing(); $event.stopPropagation()"
-                type="button">
-              </button>
-            </div>
+          <ng-container *ngIf="!isPhaseCollapsed('fase_b')">
+            <td *ngFor="let column of data.columns.fase_b; trackBy: trackByColumnKey" 
+                class="editable-cell fase-b-cell"
+                (click)="startEditing(project.project_id, 'fase_b', column.key, getCellValue(project, 'fase_b', column.key))">
+              <div *ngIf="!isEditing(project.project_id, 'fase_b', column.key)" class="cell-content">
+                {{ getCellValue(project, 'fase_b', column.key) || '-' }}
+              </div>
+              <div *ngIf="isEditing(project.project_id, 'fase_b', column.key)" class="cell-edit">
+                <input
+                  type="text"
+                  class="form--text-field -compact"
+                  [(ngModel)]="tempValue"
+                  (keyup.enter)="saveCell(project.project_id, 'fase_b', column.key)"
+                  (keyup.escape)="cancelEditing()"
+                  (click)="$event.stopPropagation()"
+                  autofocus
+                />
+                <button 
+                  class="button -compact -with-icon icon-checkmark"
+                  (click)="saveCell(project.project_id, 'fase_b', column.key); $event.stopPropagation()"
+                  type="button">
+                </button>
+                <button 
+                  class="button -compact -with-icon icon-close"
+                  (click)="cancelEditing(); $event.stopPropagation()"
+                  type="button">
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <td *ngIf="isPhaseCollapsed('fase_b')" class="collapsed-cell fase-b-cell">
+            ...
           </td>
           
           <!-- Fase C Cells -->
-          <td *ngFor="let column of data.columns.fase_c; trackBy: trackByColumnKey" 
-              class="editable-cell fase-c-cell"
-              (click)="startEditing(project.project_id, 'fase_c', column.key, getCellValue(project, 'fase_c', column.key))">
-            <div *ngIf="!isEditing(project.project_id, 'fase_c', column.key)" class="cell-content">
-              {{ getCellValue(project, 'fase_c', column.key) || '-' }}
-            </div>
-            <div *ngIf="isEditing(project.project_id, 'fase_c', column.key)" class="cell-edit">
-              <input
-                type="text"
-                class="form--text-field -compact"
-                [(ngModel)]="tempValue"
-                (keyup.enter)="saveCell(project.project_id, 'fase_c', column.key)"
-                (keyup.escape)="cancelEditing()"
-                (click)="$event.stopPropagation()"
-                autofocus
-              />
-              <button 
-                class="button -compact -with-icon icon-checkmark"
-                (click)="saveCell(project.project_id, 'fase_c', column.key); $event.stopPropagation()"
-                type="button">
-              </button>
-              <button 
-                class="button -compact -with-icon icon-close"
-                (click)="cancelEditing(); $event.stopPropagation()"
-                type="button">
-              </button>
-            </div>
+          <ng-container *ngIf="!isPhaseCollapsed('fase_c')">
+            <td *ngFor="let column of data.columns.fase_c; trackBy: trackByColumnKey" 
+                class="editable-cell fase-c-cell"
+                (click)="startEditing(project.project_id, 'fase_c', column.key, getCellValue(project, 'fase_c', column.key))">
+              <div *ngIf="!isEditing(project.project_id, 'fase_c', column.key)" class="cell-content">
+                {{ getCellValue(project, 'fase_c', column.key) || '-' }}
+              </div>
+              <div *ngIf="isEditing(project.project_id, 'fase_c', column.key)" class="cell-edit">
+                <input
+                  type="text"
+                  class="form--text-field -compact"
+                  [(ngModel)]="tempValue"
+                  (keyup.enter)="saveCell(project.project_id, 'fase_c', column.key)"
+                  (keyup.escape)="cancelEditing()"
+                  (click)="$event.stopPropagation()"
+                  autofocus
+                />
+                <button 
+                  class="button -compact -with-icon icon-checkmark"
+                  (click)="saveCell(project.project_id, 'fase_c', column.key); $event.stopPropagation()"
+                  type="button">
+                </button>
+                <button 
+                  class="button -compact -with-icon icon-close"
+                  (click)="cancelEditing(); $event.stopPropagation()"
+                  type="button">
+                </button>
+              </div>
+            </td>
+          </ng-container>
+          <td *ngIf="isPhaseCollapsed('fase_c')" class="collapsed-cell fase-c-cell">
+            ...
           </td>
         </tr>
       </tbody>

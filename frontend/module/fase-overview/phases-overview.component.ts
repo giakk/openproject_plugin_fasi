@@ -49,6 +49,13 @@ export class PhasesOverviewComponent implements OnInit {
   public searchTerm = '';
   public editingCell: { projectId: number; phase: string; field: string } | null = null;
   public tempValue = '';
+  
+  // Stato di espansione delle fasi
+  public collapsedPhases: { [key: string]: boolean } = {
+    fase_a: false,
+    fase_b: false,
+    fase_c: false,
+  };
 
   constructor(
     private http: HttpClient,
@@ -97,6 +104,15 @@ export class PhasesOverviewComponent implements OnInit {
     }
     
     this.cdRef.detectChanges();
+  }
+
+  public togglePhase(phase: string): void {
+    this.collapsedPhases[phase] = !this.collapsedPhases[phase];
+    this.cdRef.detectChanges();
+  }
+
+  public isPhaseCollapsed(phase: string): boolean {
+    return this.collapsedPhases[phase] || false;
   }
 
   public startEditing(projectId: number, phase: string, field: string, currentValue: string | undefined): void {
