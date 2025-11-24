@@ -12,6 +12,7 @@ class CreateFaseBData < ActiveRecord::Migration[7.1]
       t.string :prove_materiali, limit: 100
       t.string :consegna_cliente, limit: 100
       t.string :verbale_consegna, limit: 100
+      t.boolean :hide, default: false
 
       t.timestamps
     end

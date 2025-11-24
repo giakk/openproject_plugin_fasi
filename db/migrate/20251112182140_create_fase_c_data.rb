@@ -11,6 +11,7 @@ class CreateFaseCData < ActiveRecord::Migration[7.1]
       t.string :numero_matricola, limit: 100
       t.string :fine_lavori_pratica, limit: 100
       t.string :variazione_catastale, limit: 100
+      t.boolean :hide, default: false
 
       t.timestamps
     end

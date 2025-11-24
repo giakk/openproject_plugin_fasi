@@ -27,6 +27,7 @@ class CreateFaseAData < ActiveRecord::Migration[7.1]
       t.string :schema_elettrico, limit: 100
       t.string :ampliamento_contatore, limit: 100
       t.string :approvazione_disegno_cliente, limit: 100
+      t.boolean :hide, default: false
 
       t.timestamps
     end
