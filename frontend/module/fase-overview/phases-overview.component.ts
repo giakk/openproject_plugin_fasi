@@ -21,6 +21,7 @@ interface ProjectPhaseData {
   project_id: number;
   project_name: string;
   project_identifier: string;
+  indirizzo_impianto: string | null;
   fase_a: PhaseData;
   fase_b: PhaseData;
   fase_c: PhaseData;
@@ -96,16 +97,17 @@ export class PhasesOverviewComponent implements OnInit {
     if (!this.data) return;
 
     const term = this.searchTerm.toLowerCase().trim();
-    
+
     if (term === '') {
       this.filteredProjects = this.data.projects;
     } else {
       this.filteredProjects = this.data.projects.filter(project =>
         project.project_name.toLowerCase().includes(term) ||
-        project.project_identifier.toLowerCase().includes(term)
+        project.project_identifier.toLowerCase().includes(term) ||
+        (project.indirizzo_impianto && project.indirizzo_impianto.toLowerCase().includes(term))
       );
     }
-    
+
     this.cdRef.detectChanges();
   }
 

@@ -110,6 +110,13 @@
           border-right: 2px solid #aaa
           font-weight: 600
 
+        &.indirizzo-impianto-column
+          text-align: left
+          border-right: 2px solid #aaa
+          font-weight: 600
+          background-color: #f9f9f9
+          
+
         &.phase-column
           .column-label
             font-size: 12px
@@ -168,6 +175,11 @@
           &:hover
             text-decoration: underline
 
+      &.indirizzo-impianto-cell
+        font-weight: 400
+        border-right: 2px solid #ddd
+        max-width: 500px
+
       &.editable-cell
         cursor: pointer
         position: relative
@@ -222,6 +234,13 @@
     background-color: white
 
     &.project-name-column
+      z-index: 11
+
+  .sticky-column-2
+    position: sticky
+    z-index: 5
+
+    &.indirizzo-impianto-column
       z-index: 11
 
 .no-results

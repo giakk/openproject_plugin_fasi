@@ -44,10 +44,19 @@ class PhasesOverviewController < ApplicationController
       fase_b = FaseBDatum.find_or_initialize_by(project: project)
       fase_c = FaseCDatum.find_or_initialize_by(project: project)
 
+      # Recupera il custom field "Indirizzo Impianto"
+      indirizzo_impianto_cf = ProjectCustomField.find_by(name: 'Indirizzo Impianto')
+      indirizzo_impianto_value = nil
+      if indirizzo_impianto_cf
+        custom_value = project.custom_value_for(indirizzo_impianto_cf)
+        indirizzo_impianto_value = custom_value&.value
+      end
+
       {
         project_id: project.id,
         project_name: project.name,
         project_identifier: project.identifier,
+        indirizzo_impianto: indirizzo_impianto_value,
         fase_a: serialize_fase_a(fase_a),
         fase_b: serialize_fase_b(fase_b),
         fase_c: serialize_fase_c(fase_c)

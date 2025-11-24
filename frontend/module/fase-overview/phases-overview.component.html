@@ -49,6 +49,9 @@
           <th class="project-name-column sticky-column">
             {{ getText('phases_overview.project') }}
           </th>
+          <th class="indirizzo-impianto-column sticky-column-2">
+            Indirizzo Impianto
+          </th>
           <th *ngFor="let column of data.columns[activeTab]; trackBy: trackByColumnKey"
               class="phase-column"
               [ngClass]="activeTab + '-column'"
@@ -64,6 +67,11 @@
             <a [href]="getProjectUrl(project.project_identifier)" class="project-link">
               {{ project.project_name }}
             </a>
+          </td>
+
+          <!-- Indirizzo Impianto -->
+          <td class="indirizzo-impianto-cell sticky-column-2">
+            {{ project.indirizzo_impianto || '-' }}
           </td>
 
           <!-- Phase Data Cells -->
