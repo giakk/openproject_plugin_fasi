@@ -49,8 +49,11 @@ export class PhasesOverviewComponent implements OnInit {
   public searchTerm = '';
   public editingCell: { projectId: number; phase: string; field: string } | null = null;
   public tempValue = '';
-  
-  // Stato di espansione delle fasi
+
+  // Tab attivo
+  public activeTab: 'fase_a' | 'fase_b' | 'fase_c' = 'fase_a';
+
+  // Stato di espansione delle fasi (mantenuto per retrocompatibilità)
   public collapsedPhases: { [key: string]: boolean } = {
     fase_a: false,
     fase_b: false,
@@ -103,6 +106,11 @@ export class PhasesOverviewComponent implements OnInit {
       );
     }
     
+    this.cdRef.detectChanges();
+  }
+
+  public setActiveTab(tab: 'fase_a' | 'fase_b' | 'fase_c'): void {
+    this.activeTab = tab;
     this.cdRef.detectChanges();
   }
 

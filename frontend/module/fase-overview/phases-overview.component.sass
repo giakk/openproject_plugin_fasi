@@ -28,6 +28,56 @@
   padding: 40px
   gap: 10px
 
+.phases-tabs
+  display: flex
+  gap: 8px
+  margin-bottom: 20px
+  border-bottom: 2px solid #e0e0e0
+
+  .tab-button
+    background: none
+    border: none
+    border-bottom: 3px solid transparent
+    padding: 8px 20px
+    cursor: pointer
+    font-size: 14px
+    font-weight: 600
+    transition: all 0.3s ease
+    position: relative
+    top: 2px
+
+    &:hover:not(.active)
+      background-color: #f5f5f5
+
+    &.active
+      border-bottom-color: currentColor
+
+    &.fase-a-tab
+      color: #4a90e2
+
+      &.active
+        background-color: #e3f2fd
+
+    &.fase-b-tab
+      color: #7cb342
+
+      &.active
+        background-color: #f1f8e9
+
+    &.fase-c-tab
+      color: #f57c00
+
+      &.active
+        background-color: #fff3e0
+
+    .phase-badge
+      display: inline-block
+      padding: 3px 12px
+      border-radius: 4px
+      font-size: 13px
+      font-weight: bold
+      color: black
+
 .phases-overview-table-wrapper
   overflow-x: auto
   border: 1px solid #e0e0e0
@@ -45,100 +95,35 @@
     top: 0
     z-index: 10
 
-    // Primo livello header (Fase A, B, C)
-    .phase-row
+    tr
       th
         padding: 6px 8px
-        text-align: center
-        font-weight: 600
-        border-bottom: 1px solid #ddd
-        border-right: 1px solid #ddd
-        cursor: pointer
-        user-select: none
-        transition: background-color 0.2s ease
-
-        &:hover:not(.project-name-column)
-          opacity: 0.8
-
-        &:last-child
-          border-right: none
-
-        &.project-name-column
-          text-align: left
-          border-right: 2px solid #aaa
-          cursor: default
-
-          &:hover
-            opacity: 1
-
-        &.phase-group
-          font-size: 14px
-          font-weight: 700
-          min-width: 120px
-
-        .phase-header-content
-          display: flex
-          align-items: center
-          justify-content: center
-          gap: 8px
-          white-space: nowrap
-
-        .collapse-icon
-          font-size: 10px
-          transition: transform 0.3s ease
-          display: inline-block
-
-          &.collapsed
-            transform: rotate(-90deg)
-
-        .phase-badge
-          display: inline-block
-          padding: 4px 12px
-          border-radius: 4px
-          font-size: 13px
-          font-weight: bold
-          color: white
-
-        &.fase-a-group
-          background-color: #e3f2fd
-
-        &.fase-b-group
-          background-color: #f1f8e9
-
-        &.fase-c-group
-          background-color: #fff3e0
-
-    // Secondo livello header (Colonne specifiche)
-    .column-row
-      th
-        padding: 0px 8px
         text-align: left
         font-weight: 600
         border-bottom: 2px solid #ddd
         white-space: nowrap
         min-width: 120px
-        max-width: 300px
-        transition: all 0.3s ease
+        max-width: 400px
 
-        &.collapsed-placeholder
-          min-width: 60px
-          text-align: center
-          font-style: italic
-          color: #999
-
-        .column-label
-          font-size: 12px
+        &.project-name-column
+          text-align: left
+          border-right: 2px solid #aaa
           font-weight: 600
 
-        &.fase-a-column
+        &.phase-column
+          .column-label
+            font-size: 12px
+            font-weight: 600
+
+        &.fase_a-column
           background-color: #e3f2fd
           border-right: 1px solid #b3d9ff
 
-        &.fase-b-column
+        &.fase_b-column
           background-color: #f1f8e9
           border-right: 1px solid #c5e1a5
 
-        &.fase-c-column
+        &.fase_c-column
           background-color: #fff3e0
           border-right: 1px solid #ffcc80
 
@@ -212,19 +197,19 @@
             font-size: 12px
             cursor: pointer
 
-      &.fase-a-cell
+      &.fase_a-cell
         border-right: 1px solid #e0e0e0
 
         &:hover:not(.collapsed-cell)
           background-color: #e3f2fd
 
-      &.fase-b-cell
+      &.fase_b-cell
         border-right: 1px solid #e0e0e0
 
         &:hover:not(.collapsed-cell)
           background-color: #f1f8e9
 
-      &.fase-c-cell
+      &.fase_c-cell
         border-right: 1px solid #e0e0e0
 
         &:hover:not(.collapsed-cell)
