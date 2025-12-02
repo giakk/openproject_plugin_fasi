@@ -1,14 +1,15 @@
 en:
   js:
     phases_overview:
-      title: "Panoramica Fasi Progetti"
-      search_placeholder: "Cerca progetto..."
-      project: "Progetto"
-      loading: "Caricamento dati..."
-      no_results: "Nessun progetto trovato"
-      saved_successfully: "Modifiche salvate con successo"
-      save_error: "Errore durante il salvataggio"
-      load_error: "Errore durante il caricamento dei dati"
+      title: "Project phases overview"
+      search_placeholder: "Search for project..."
+      project: "Project"
+      second_column: "Address"
+      loading: "Loading data..."
+      no_results: "No projects found"
+      saved_successfully: "Successful edit"
+      save_error: "Error during data saving"
+      load_error: "Error during data loading"
     fase_a:
       title: "Phase A Data"
       sconto_fattura: "Invoice discount"
