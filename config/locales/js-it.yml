@@ -4,6 +4,7 @@ it:
       title: "Panoramica Fasi Progetti"
       search_placeholder: "Cerca progetto..."
       project: "Progetto"
+      second_column: "Indirizzo Impianto"
       loading: "Caricamento dati..."
       no_results: "Nessun progetto trovato"
       saved_successfully: "Modifiche salvate con successo"
