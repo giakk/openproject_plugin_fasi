@@ -50,7 +50,7 @@
             {{ getText('phases_overview.project') }}
           </th>
           <th class="indirizzo-impianto-column sticky-column-2">
-            Indirizzo Impianto
+            {{ getText('phases_overview.second_column') }}
           </th>
           <th *ngFor="let column of data.columns[activeTab]; trackBy: trackByColumnKey"
               class="phase-column"
