@@ -37,20 +37,38 @@ class PhasesOverviewController < ApplicationController
 
   def phases_data
     # Ottiene solo i progetti attivi
-    active_projects = Project.where(active: true).order(:name)
-    
-    projects_data = active_projects.map do |project|
-      fase_a = FaseADatum.find_or_initialize_by(project: project)
-      fase_b = FaseBDatum.find_or_initialize_by(project: project)
-      fase_c = FaseCDatum.find_or_initialize_by(project: project)
+    active_projects = Project.where(active: true).order(:name).to_a
+    project_ids = active_projects.map(&:id)
 
-      # Recupera il custom field "Indirizzo Impianto"
-      indirizzo_impianto_cf = ProjectCustomField.find_by(name: 'Indirizzo Impianto')
-      indirizzo_impianto_value = nil
-      if indirizzo_impianto_cf
-        custom_value = project.custom_value_for(indirizzo_impianto_cf)
-        indirizzo_impianto_value = custom_value&.value
+    # OTTIMIZZAZIONE: Precarica tutti i Fase*Datum in 3 query invece di N*3
+    fase_a_hash = FaseADatum.where(project_id: project_ids).index_by(&:project_id)
+    fase_b_hash = FaseBDatum.where(project_id: project_ids).index_by(&:project_id)
+    fase_c_hash = FaseCDatum.where(project_id: project_ids).index_by(&:project_id)
+
+    # OTTIMIZZAZIONE: Carica il custom field una sola volta (fuori dal loop)
+    indirizzo_impianto_cf = ProjectCustomField.find_by(name: 'Indirizzo Impianto')
+
+    # OTTIMIZZAZIONE: Precarica tutti i custom values in una query
+    custom_values_hash = {}
+    if indirizzo_impianto_cf
+      CustomValue.where(
+        customized_type: 'Project',
+        customized_id: project_ids,
+        custom_field_id: indirizzo_impianto_cf.id
+      ).each do |cv|
+        custom_values_hash[cv.customized_id] = cv.value
       end
+    end
+
+    # Costruisce i dati dei progetti usando i hash precalcolati
+    projects_data = active_projects.map do |project|
+      # Usa hash lookup O(1) invece di query SQL
+      fase_a = fase_a_hash[project.id] || FaseADatum.new(project: project)
+      fase_b = fase_b_hash[project.id] || FaseBDatum.new(project: project)
+      fase_c = fase_c_hash[project.id] || FaseCDatum.new(project: project)
+
+      # Usa il valore precalcolato del custom field
+      indirizzo_impianto_value = custom_values_hash[project.id]
 
       {
         project_id: project.id,
