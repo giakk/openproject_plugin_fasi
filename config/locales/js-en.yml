@@ -12,6 +12,7 @@ en:
       load_error: "Error during data loading"
     fase_a:
       title: "Phase A Data"
+      mark_as_done: "Mark as done"
       sconto_fattura: "Invoice discount"
       data_inizio_lavori: "Contractual work start date"
       data_fine_lavori: "Contractual work end date"
@@ -42,6 +43,7 @@ en:
       no_permission: "You do not have permission to modify this data"
     fase_b:
       title: "Phase B Data"
+      mark_as_done: "Mark as done"
       fossa_ridotta: "Request for reduced headroom/pit clearance exemption"
       notifica_asl: "Work start notification to Health Authority"
       coordinamento_sicurezza: "Safety coordination"
@@ -57,6 +59,7 @@ en:
       no_permission: "You do not have permission to modify this data"
     fase_c:
       title: "Phase C Data"
+      mark_as_done: "Mark as done"
       collaudo_impianto: "System testing by Certification Body and report issuance"
       libretto_impianto: "System manual"
       dichiarazione_ce: "Our CE declaration"

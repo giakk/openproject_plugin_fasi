@@ -35,6 +35,7 @@ interface FaseAData {
   schema_elettrico?: string;
   ampliamento_contatore?: string;
   approvazione_disegno_cliente?: string;
+  hide?: boolean;
 }
 
 @Component({
@@ -163,5 +164,36 @@ export class FaseADataComponent implements OnInit {
 
   public getText(key: string): string {
     return this.i18n.t(`js.${key}`);
+  }
+
+  public toggleHide(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const newHideValue = checkbox.checked;
+
+    if (!this.data) {
+      return;
+    }
+
+    const url = `/projects/${this.projectId}/fase_a_data`;
+    const payload = {
+      hide: newHideValue,
+    };
+
+    this.http.put<FaseAData>(url, { fase_a_datum: payload }, { observe: 'response' }).subscribe({
+      next: (response) => {
+        if (this.data && response.body) {
+          this.data.hide = response.body.hide;
+        }
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error updating hide status:', error);
+        if (this.data) {
+          this.data.hide = !newHideValue;
+          checkbox.checked = !newHideValue;
+        }
+        this.cdRef.detectChanges();
+      },
+    });
   }
 }

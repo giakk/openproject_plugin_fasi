@@ -14,7 +14,8 @@ interface PhaseColumn {
 }
 
 interface PhaseData {
-  [key: string]: string | undefined;
+  [key: string]: string | boolean | undefined;
+  hide?: boolean;
 }
 
 interface ProjectPhaseData {
@@ -80,7 +81,7 @@ export class PhasesOverviewComponent implements OnInit {
     this.http.get<OverviewData>(url, { observe: 'response' }).subscribe({
       next: (response) => {
         this.data = response.body;
-        this.filteredProjects = this.data?.projects || [];
+        this.applyFilters();
         this.loading = false;
         this.cdRef.detectChanges();
       },
@@ -94,25 +95,36 @@ export class PhasesOverviewComponent implements OnInit {
   }
 
   public onSearch(): void {
+    this.applyFilters();
+  }
+
+  public setActiveTab(tab: 'fase_a' | 'fase_b' | 'fase_c'): void {
+    this.activeTab = tab;
+    this.applyFilters();
+  }
+
+  private applyFilters(): void {
     if (!this.data) return;
 
-    const term = this.searchTerm.toLowerCase().trim();
+    let filtered = this.data.projects;
 
-    if (term === '') {
-      this.filteredProjects = this.data.projects;
-    } else {
-      this.filteredProjects = this.data.projects.filter(project =>
+    // Filtra per hide status in base al tab attivo
+    filtered = filtered.filter(project => {
+      const phaseData = project[this.activeTab as keyof ProjectPhaseData] as PhaseData;
+      return !phaseData?.hide;
+    });
+
+    // Filtra per search term
+    const term = this.searchTerm.toLowerCase().trim();
+    if (term !== '') {
+      filtered = filtered.filter(project =>
         project.project_name.toLowerCase().includes(term) ||
         project.project_identifier.toLowerCase().includes(term) ||
         (project.indirizzo_impianto && project.indirizzo_impianto.toLowerCase().includes(term))
       );
     }
 
-    this.cdRef.detectChanges();
-  }
-
-  public setActiveTab(tab: 'fase_a' | 'fase_b' | 'fase_c'): void {
-    this.activeTab = tab;
+    this.filteredProjects = filtered;
     this.cdRef.detectChanges();
   }
 
@@ -139,7 +151,7 @@ export class PhasesOverviewComponent implements OnInit {
 
   public saveCell(projectId: number, phase: string, field: string): void {
     const url = '/phases_overview/update';
-    
+
     const payload = {
       project_id: projectId,
       phase_type: phase,
@@ -149,16 +161,16 @@ export class PhasesOverviewComponent implements OnInit {
 
     this.http.put(url, payload, { observe: 'response' }).subscribe({
       next: (response: any) => {
-        // Aggiorna il valore locale
-        const project = this.filteredProjects.find(p => p.project_id === projectId);
+        // Aggiorna il valore locale nel data originale (non in filteredProjects)
+        const project = this.data?.projects.find(p => p.project_id === projectId);
         if (project && project[phase as keyof ProjectPhaseData]) {
           (project[phase as keyof ProjectPhaseData] as PhaseData)[field] = this.tempValue;
         }
-        
+
         this.editingCell = null;
         this.tempValue = '';
         this.toastService.addSuccess(this.i18n.t('js.phases_overview.saved_successfully'));
-        this.cdRef.detectChanges();
+        this.applyFilters();
       },
       error: (error) => {
         console.error('Error saving cell:', error);
@@ -184,7 +196,17 @@ export class PhasesOverviewComponent implements OnInit {
 
   public getCellValue(project: ProjectPhaseData, phase: string, field: string): string {
     const phaseData = project[phase as keyof ProjectPhaseData] as PhaseData;
-    return phaseData?.[field] || '';
+    const value = phaseData?.[field];
+
+    if (value === undefined || value === null) {
+      return '';
+    }
+
+    if (typeof value === 'boolean') {
+      return value.toString();
+    }
+
+    return value;
   }
 
   public trackByProjectId(index: number, project: ProjectPhaseData): number {

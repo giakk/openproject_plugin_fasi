@@ -19,6 +19,7 @@ interface FaseCData {
   numero_matricola?: string;
   fine_lavori_pratica?: string;
   variazione_catastale?: string;
+  hide?: boolean;
   can_edit: boolean;
 }
 
@@ -125,5 +126,36 @@ export class FaseCDataComponent implements OnInit {
 
   public getText(key: string): string {
     return this.i18n.t(`js.${key}`);
+  }
+
+  public toggleHide(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const newHideValue = checkbox.checked;
+
+    if (!this.data) {
+      return;
+    }
+
+    const url = `/projects/${this.projectId}/fase_c_data`;
+    const payload = {
+      hide: newHideValue,
+    };
+
+    this.http.put<FaseCData>(url, { fase_c_datum: payload }, { observe: 'response' }).subscribe({
+      next: (response) => {
+        if (this.data && response.body) {
+          this.data.hide = response.body.hide;
+        }
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error updating hide status:', error);
+        if (this.data) {
+          this.data.hide = !newHideValue;
+          checkbox.checked = !newHideValue;
+        }
+        this.cdRef.detectChanges();
+      },
+    });
   }
 }

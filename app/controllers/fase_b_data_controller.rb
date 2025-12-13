@@ -38,6 +38,7 @@ class FaseBDataController < ApplicationController
       prove_materiali: @fase_b_datum.prove_materiali,
       consegna_cliente: @fase_b_datum.consegna_cliente,
       verbale_consegna: @fase_b_datum.verbale_consegna,
+      hide: @fase_b_datum.hide,
       created_at: @fase_b_datum.created_at,
       updated_at: @fase_b_datum.updated_at
     }
@@ -53,7 +54,8 @@ class FaseBDataController < ApplicationController
       :consegna_doc_sicurezza,
       :prove_materiali,
       :consegna_cliente,
-      :verbale_consegna
+      :verbale_consegna,
+      :hide
     )
   end
 end

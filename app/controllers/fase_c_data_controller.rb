@@ -37,6 +37,7 @@ class FaseCDataController < ApplicationController
       numero_matricola: @fase_c_datum.numero_matricola,
       fine_lavori_pratica: @fase_c_datum.fine_lavori_pratica,
       variazione_catastale: @fase_c_datum.variazione_catastale,
+      hide: @fase_c_datum.hide,
       created_at: @fase_c_datum.created_at,
       updated_at: @fase_c_datum.updated_at
     }
@@ -51,7 +52,8 @@ class FaseCDataController < ApplicationController
       :incarico_ente_certificato,
       :numero_matricola,
       :fine_lavori_pratica,
-      :variazione_catastale
+      :variazione_catastale,
+      :hide
     )
   end
 end

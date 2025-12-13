@@ -2,10 +2,43 @@
   padding: 20px
   max-width: 800px
 
-  h2
+  .fase-c-header
+    display: flex
+    justify-content: space-between
+    align-items: center
     margin-bottom: 20px
-    font-size: 1.5rem
-    font-weight: 600
+
+    .fase-c-header-left
+      flex: 0 0 auto
+
+      .form--label-with-check-box
+        display: flex
+        align-items: center
+        gap: 8px
+        cursor: pointer
+        margin: 0
+
+        .form--check-box
+          cursor: pointer
+          width: 18px
+          height: 18px
+
+          &:disabled
+            cursor: not-allowed
+            opacity: 0.5
+
+        .form--check-box-label
+          font-weight: 500
+          user-select: none
+
+    .fase-c-header-right
+      flex: 1
+      text-align: right
+
+      h2
+        margin: 0
+        font-size: 1.5rem
+        font-weight: 600
 
 .fase-c-form
   .form--field

@@ -53,6 +53,7 @@ class FaseADataController < ApplicationController
       schema_elettrico: @fase_a_datum.schema_elettrico,
       ampliamento_contatore: @fase_a_datum.ampliamento_contatore,
       approvazione_disegno_cliente: @fase_a_datum.approvazione_disegno_cliente,
+      hide: @fase_a_datum.hide,
       created_at: @fase_a_datum.created_at,
       updated_at: @fase_a_datum.updated_at
     }
@@ -82,7 +83,8 @@ class FaseADataController < ApplicationController
       :dichiarazione_assorbimenti,
       :schema_elettrico,
       :ampliamento_contatore,
-      :approvazione_disegno_cliente
+      :approvazione_disegno_cliente,
+      :hide
     )
   end
 end

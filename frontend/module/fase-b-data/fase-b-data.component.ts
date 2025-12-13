@@ -20,6 +20,7 @@ interface FaseBData {
   prove_materiali?: string;
   consegna_cliente?: string;
   verbale_consegna?: string;
+  hide?: boolean;
 }
 
 @Component({
@@ -118,5 +119,36 @@ export class FaseBDataComponent implements OnInit {
 
   public getText(key: string): string {
     return this.i18n.t(`js.${key}`);
+  }
+
+  public toggleHide(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    const newHideValue = checkbox.checked;
+
+    if (!this.data) {
+      return;
+    }
+
+    const url = `/projects/${this.projectId}/fase_b_data`;
+    const payload = {
+      hide: newHideValue,
+    };
+
+    this.http.put<FaseBData>(url, { fase_b_datum: payload }, { observe: 'response' }).subscribe({
+      next: (response) => {
+        if (this.data && response.body) {
+          this.data.hide = response.body.hide;
+        }
+        this.cdRef.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error updating hide status:', error);
+        if (this.data) {
+          this.data.hide = !newHideValue;
+          checkbox.checked = !newHideValue;
+        }
+        this.cdRef.detectChanges();
+      },
+    });
   }
 }

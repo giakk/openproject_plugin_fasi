@@ -1,5 +1,21 @@
 <div class="fase-c-container">
-  <h2>{{ getText('fase_c.title') }}</h2>
+  <div class="fase-c-header">
+    <div class="fase-c-header-left">
+      <label class="form--label-with-check-box">
+        <input
+          type="checkbox"
+          class="form--check-box"
+          [checked]="data?.hide || false"
+          (change)="toggleHide($event)"
+          [disabled]="loading"
+        />
+        <span class="form--check-box-label">{{ getText('fase_c.mark_as_done') }}</span>
+      </label>
+    </div>
+    <div class="fase-c-header-right">
+      <h2>{{ getText('fase_c.title') }}</h2>
+    </div>
+  </div>
 
   <div *ngIf="loading" class="loading-indicator">
     <span class="loading-indicator--spinner"></span>

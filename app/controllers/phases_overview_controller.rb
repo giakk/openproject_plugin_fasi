@@ -98,7 +98,8 @@ class PhasesOverviewController < ApplicationController
       dichiarazione_assorbimenti: fase_a.dichiarazione_assorbimenti,
       schema_elettrico: fase_a.schema_elettrico,
       ampliamento_contatore: fase_a.ampliamento_contatore,
-      approvazione_disegno_cliente: fase_a.approvazione_disegno_cliente
+      approvazione_disegno_cliente: fase_a.approvazione_disegno_cliente,
+      hide: fase_a.hide
     }
   end
 
@@ -112,7 +113,8 @@ class PhasesOverviewController < ApplicationController
       consegna_doc_sicurezza: fase_b.consegna_doc_sicurezza,
       prove_materiali: fase_b.prove_materiali,
       consegna_cliente: fase_b.consegna_cliente,
-      verbale_consegna: fase_b.verbale_consegna
+      verbale_consegna: fase_b.verbale_consegna,
+      hide: fase_b.hide
     }
   end
 
@@ -125,7 +127,8 @@ class PhasesOverviewController < ApplicationController
       incarico_ente_certificato: fase_c.incarico_ente_certificato,
       numero_matricola: fase_c.numero_matricola,
       fine_lavori_pratica: fase_c.fine_lavori_pratica,
-      variazione_catastale: fase_c.variazione_catastale
+      variazione_catastale: fase_c.variazione_catastale,
+      hide: fase_c.hide
     }
   end
 
